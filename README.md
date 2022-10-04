@@ -1,29 +1,54 @@
-# README #
+Add to WASIC Compiler to environment
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Do this every time console is created
 
-### What is this repository for? ###
+source ~/.wasienv/wasienv.sh
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+To install WASI Compiler
 
-### How do I get set up? ###
+Only do this first time
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+curl <https://raw.githubusercontent.com/wasienv/wasienv/master/install.sh> | sh
 
-### Contribution guidelines ###
+Install wasi sdk
 
-* Writing tests
-* Code review
-* Other guidelines
+Linux
 
-### Who do I talk to? ###
+$ cd ~/.wasienv
+$ export WASI_VERSION=14
+$ export WASI_VERSION_FULL=${WASI_VERSION}.0
+$ wget https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-${WASI_VERSION}/wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz
+tar xvf wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz
+$ echo "export WASI_SDK_PATH=`pwd`/wasi-sdk-${WASI_VERSION_FULL}" > wasi_sdk_env.sh
 
-* Repo owner or admin
-* Other community or team contact
+MacOS
+
+$ cd ~/.wasienv
+$ export WASI_VERSION=14
+$ export WASI_VERSION_FULL=${WASI_VERSION}.0
+$ wget <https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-${WASI_VERSION}/wasi-sdk-${WASI_VERSION_FULL}-macos.tar.gz>
+tar xvf wasi-sdk-${WASI_VERSION_FULL}-macos.tar.gz
+$ echo "export WASI_SDK_PATH=`pwd`/wasi-sdk-${WASI_VERSION_FULL}" > wasi_sdk_env.sh
+
+Initialize wasm-example
+
+cd ~/
+unzip wasm-example.zip or download from https://bitbucket.org/mimiktech/ti-vision-app-example/src/develop/wasm-example/
+cd wasm-example
+npm install
+
+To compile
+
+Assume you are in the wasm-example folder.
+The commandlines below allow you to build wtest-v1-1.0.0.tar in the deploy folder
+
+./build.sh
+
+How to test
+
+Get the WASI image from ~/wasm-service/deploy directory  (e.g wasm-example-v1-1.0.0.tar)  and deploy WASI microservice  by using Android Studio “http” plug in with “wasm-test.http” under ~/wasm-service/deploy directory or by following “Deploying the edgeEngine Image for the microservice” section in  https://devdocs.mimik.com/tutorials/05-index  link.
+
+ls ~/wasm-service/deploy
+curl - http://{{host}}:8083/{{clientId}}/wasm-example/v1/time
+
+It will print “"hello world" string. If you would like to change, you can update ~/wasm-service/main.cpp
