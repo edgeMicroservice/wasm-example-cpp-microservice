@@ -1,0 +1,88 @@
+# Local
+@host=http://localhost:8083
+@tokenScope=openid edge:mcm edge:clusters edge:account:associate
+@wtarName=wasm-example-v1-1.0.0.tar
+
+####
+POST {{host}}/jsonrpc/v1
+Content-Content-Type: application/json
+
+{"jsonrpc": "2.0", "method": "getMe", "params": [], "id": 1}
+
+
+####
+GET {{host}}/.well-known/supernode-configuration
+
+#### Get EdgeIdToken
+# @name jsonrpc
+POST {{host}}/jsonrpc/v1
+Content-Content-Type: application/json
+
+{"jsonrpc": "2.0", "method": "getEdgeIdToken", "params": [], "id": 1}
+
+####
+@edgeIdToken={{jsonrpc.response.body.$.result.id_token}}
+
+####
+# @name mid
+POST https://mid.mimik360.com/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{clientId}}
+&grant_type=id_token_signin
+&id_token={{developerIdToken}}
+&scope={{tokenScope}}
+&edge_id_token={{edgeIdToken}}
+
+###
+@edgeToken={{mid.response.body.$.access_token}}
+
+####
+GET {{host}}/mcm/v1/images
+Authorization: Bearer {{edgeToken}}
+
+####
+GET {{host}}/mcm/v1/containers
+Authorization: Bearer {{edgeToken}}
+
+###
+# WASM
+####
+POST {{host}}/mcm/v1/images
+Content-Type: multipart/form-data; boundary=$Boundary$
+Authorization: Bearer {{edgeToken}}
+
+--$Boundary$
+Content-Disposition: form-data; name="image"; filename="{{wtarName}}"
+
+< ./deploy/{{wtarName}}
+--$Boundary$--
+
+####
+# @name container
+POST {{host}}/mcm/v1/containers
+Authorization: Bearer {{edgeToken}}
+
+{
+    "name": "wasm-example-v1",
+    "image": "wasm-example-v1",
+    "env": {
+      "MCM.BASE_API_PATH": "/wasm-example/v1",
+      "MCM.CHILD_RUNTIME": "true"
+    }
+}
+
+###
+POST {{host}}/mcm/v1/containers
+Authorization: Bearer {{edgeToken}}
+
+{
+    "name": "wasm-example-v1",
+    "image": "wasm-example-v1",
+    "env": {
+      "MCM.BASE_API_PATH": "/wasm-example/v1"
+    }
+}
+
+####
+GET {{host}}/{{clientId}}/wasm-example/v1/time

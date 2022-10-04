@@ -1,0 +1,5 @@
+package:
+  imageName: wasm-example
+  imageIndexFilePath: ./build/wasm-example-strip.wasm
+  outputFolder: ./deploy
+  
