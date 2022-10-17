@@ -1,3 +1,5 @@
+# This file provides the configuration information so that the mimik
+# packager understands now to package up the microservice as a WASM binary.
 package:
   imageName: wasm-example
   imageIndexFilePath: ./build/wasm-example-strip.wasm

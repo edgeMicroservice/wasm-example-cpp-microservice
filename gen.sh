@@ -1,1 +1,0 @@
-xxd -i build/wasm-example-strip.wasm > wasm-example.h
