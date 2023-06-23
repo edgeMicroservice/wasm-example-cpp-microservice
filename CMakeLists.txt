@@ -18,7 +18,7 @@ Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
   serverless-sdk
   GIT_REPOSITORY https://github.com/edgeMicroservice/wasm-serverless-cpp-sdk.git
-  GIT_TAG v1.0.0
+  GIT_TAG v2.0.0
   GIT_PROGRESS TRUE
 )
 
