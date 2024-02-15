@@ -31,7 +31,7 @@ add_executable(${PROJECT_NAME})
 #Set targets
 target_sources(${PROJECT_NAME}
   PRIVATE
-  ${CMAKE_SOURCE_DIR}/main.cpp
+  ${CMAKE_SOURCE_DIR}/src/main.cpp
 )
 
 # Disable C++ exceptions, and set the filename extension to .wasnm

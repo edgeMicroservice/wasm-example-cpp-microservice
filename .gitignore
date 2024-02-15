@@ -6,6 +6,16 @@
 # Node artifact files
 node_modules/
 dist/
+deploy/
+
+# customization
+.env
+.edgetoken
+.edge
+.devidtoken
+.vscode
+build
+local/start.json
 
 # Compiled Java class files
 *.class
