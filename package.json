@@ -5,11 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "package": "node ./node_modules/@mimik/edge-ms-packager/index.js"
+    "package": "node ./node_modules/@mimik/edge-ms-packager/index.js",
+    "predeploy": "node ./node_modules/@mimik/mimik-edge-cli/bin/run image deploy -f .edgetoken -i ./deploy/${npm_package_name}-v1-${npm_package_version}.tar",
+    "deploy": "node ./node_modules/@mimik/mimik-edge-cli/bin/run container deploy -f .edgetoken -p ./local/start.json",
+    "list": "node ./node_modules/@mimik/mimik-edge-cli/bin/run container list -f .edgetoken",
+    "hotdeploy": "node ./node_modules/nodemon/bin/nodemon.js --watch ./local --watch ./deploy -e json,tar --exec npm run deploy"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@mimik/edge-ms-packager": "1.1.5"
+    "@mimik/mimik-edge-cli": "^2.0.0",
+    "@mimik/edge-ms-packager": "1.1.5",
+    "nodemon": "^3.0.2"
   }
 }

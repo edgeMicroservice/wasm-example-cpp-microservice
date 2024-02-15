@@ -8,5 +8,5 @@ cmake --build build
 
 # Strip out the unnecessary symbols
 ${WASI_SDK_PATH}/bin/strip ./build/wasm-example.wasm -o ./build/wasm-example-strip.wasm
-
+npm i
 npm run package

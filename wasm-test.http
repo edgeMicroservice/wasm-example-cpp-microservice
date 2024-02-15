@@ -3,15 +3,14 @@
 @tokenScope=openid edge:mcm edge:clusters edge:account:associate
 @wtarName=wasm-example-v1-1.0.0.tar
 
+@developerIdToken={{$dotenv DEVELOPER_ID_TOKEN}}
+@clientId={{$dotenv CLIENT_ID}}
+
 ####
 POST {{host}}/jsonrpc/v1
 Content-Content-Type: application/json
 
 {"jsonrpc": "2.0", "method": "getMe", "params": [], "id": 1}
-
-
-####
-GET {{host}}/.well-known/supernode-configuration
 
 #### Get EdgeIdToken
 # @name jsonrpc
@@ -25,7 +24,7 @@ Content-Content-Type: application/json
 
 ####
 # @name mid
-POST https://mid.mimik360.com/token
+POST https://devconsole-mid.mimik.com/token
 Content-Type: application/x-www-form-urlencoded
 
 client_id={{clientId}}
@@ -36,6 +35,12 @@ client_id={{clientId}}
 
 ###
 @edgeToken={{mid.response.body.$.access_token}}
+
+####
+POST {{host}}/jsonrpc/v1
+Content-Content-Type: application/json
+
+{"jsonrpc": "2.0", "method": "associateAccount", "params": ["{{edgeToken}}"], "id": 1}
 
 ####
 GET {{host}}/mcm/v1/images
